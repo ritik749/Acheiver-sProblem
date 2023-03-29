@@ -1,0 +1,70 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+//gives left side set bit
+int lsb(int n){
+    int k=-1;
+    
+    while(n!=0){
+        int bit = n&(-n);
+        k=log2(bit);
+        n=n^bit;
+    }
+    
+    return k;
+}
+
+
+//filling 4 and 5 to its right postions
+void solve(int s,int e, int n,vector<int>&ans){
+    
+    if(s>=e)
+     return;
+     
+    
+     int lsmb1 = lsb(n);// finding left side set bit
+     int k = 1<<lsmb1;  // getting the number 
+     
+     n=n^k;  // unset the left side set bit
+     
+     if(k/2>n){  // compare 
+         ans[s]=ans[e]=4;
+     }else{
+         ans[s]=ans[e]=5;
+     }
+     
+     // for taking modulo then do plus 
+     k=k>>1;
+     
+     return solve(s+1,e-1,(n%k)+k,ans);
+}
+
+int main()
+{
+   int n= 2147483647;
+   
+  
+  int len = 2*lsb(n+1);
+   
+  vector<int>ans(len);
+   
+  int s=0,e=len-1;
+   
+  solve(s,e,n+1,ans);
+  
+  for(auto c: ans)
+   cout<<c;
+   
+   cout<<endl<<ans.size();
+    
+    return 0;
+}
